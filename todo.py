@@ -1,18 +1,31 @@
 tasks = []
 
+def load_tasks():
+    try:
+        with open("tasks.txt", "r") as f:
+            for line in f:
+                tasks.append(line.strip())
+    except FileNotFoundError:
+        pass
+def save_tasks():
+    with open("tasks.txt", "w") as f:
+        for task in tasks:
+            f.write(task + "\n")
 def add_task(task):
     tasks.append(task)
+    save_tasks()
+
 
 def show_tasks():
-    n = 1
-    for t in tasks:
-        print(f"{n}. {t}")
-        n = n + 1
+    for i, task in enumerate(tasks, start=1):
+        print(f"{i}. {task}")
 
 def remove_task(number):
-    if number > 0 and number <= len(tasks):
+   if number > 0 and number <= len(tasks):
         tasks.pop(number - 1)
+        save_tasks()
 
+load_tasks()
 while True:
     answer = input("Type 'add', 'show', 'remove', or 'quit': ")
     if answer == "add":
