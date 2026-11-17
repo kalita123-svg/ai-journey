@@ -1,27 +1,22 @@
-class Task:
-    def __init__(self, title):
-        self.title = title
-        self.done = False
-    def complete(self):
-        self.done = True
-    def show(self):
-        if self.done:
-            print(f"[x] {self.title}")
-        else:
-            print(f"[ ] {self.title}")
+from task import Task
 
 tasks = []
 def load_tasks():
     try:
         with open("tasks.txt", "r") as f:
             for line in f:
-                tasks.append(Task(line.strip()))
+                parts = line.strip().split(",", 1)
+                title = parts[1]
+                t = Task(title)
+                done = parts[0] == "True"
+                t.done = done
+                tasks.append(t)
     except FileNotFoundError:
         pass
 def save_tasks():
     with open("tasks.txt", "w") as f:
         for task in tasks:
-            f.write(task.title + "\n")
+            f.write(f"{task.done},{task.title}\n")
 def add_task(title):
     tasks.append(Task(title))
     save_tasks()
